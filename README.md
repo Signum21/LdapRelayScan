@@ -30,13 +30,11 @@ It is recommended to use either Docker or a Python virtual environment when runn
 1) Ensure [python virtualenv](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/) is installed on your machine
 2) Clone the repository and change directory
 	- `git clone https://github.com/zyn3rgy/LdapRelayScan.git && cd LdapRelayScan`
-3) Create a Python virtual environment for the project
-	- `virtualenv env`
-4) Activate the Python virtual environment
-	- `source venv/bin/activate`
-5) Install exact requirement version dependencies
+3) Create a Python virtual environment and activate it
+	- `virtualenv venv && source venv/bin/activate`
+4) Install exact requirement version dependencies
 	 - `python3 -m pip install -r requirements_exact.txt`
-6) [optionally] Ensure the script executes properly
+5) [optionally] Ensure the script executes properly
 	- `python3 LdapRelayScan.py -h`
 
 ## Usage
@@ -50,10 +48,11 @@ arguments:
   -h, --help        show this help message and exit
   -method method    LDAPS or BOTH - LDAPS checks for channel binding, BOTH checks for LDAP signing and LDAP channel binding [authentication required]
   -dc-ip DC_IP      DNS Nameserver on network. Any DC's IPv4 address should work.
+  -only-one			Test only the specified Domain Controller.
   -u username       Domain username value.
-  -timeout timeout  The timeout for MSLDAP client connection.
   -p password       Domain username value.
   -nthash nthash    NT hash of password
+  -timeout timeout  The timeout for MSLDAP client connection.
 
 ```
 
@@ -65,6 +64,7 @@ arguments:
 python3 LdapRelayScan.py -method LDAPS -dc-ip 10.0.0.20
 python3 LdapRelayScan.py -method BOTH -dc-ip 10.0.0.20 -u domainuser1 
 python3 LdapRelayScan.py -method BOTH -dc-ip 10.0.0.20 -u domainuser1 -p badpassword2
+python3 LdapRelayScan.py -method BOTH -dc-ip 10.0.0.20 -u domainuser1 -p badpassword2 -only-one
 python3 LdapRelayScan.py -method BOTH -dc-ip 10.0.0.20 -u domainuser1 -nthash e6ee750a1feb2c7ee50d46819a6e4d25
 ```
 ![](https://github.com/zyn3rgy/LdapRelayScan/blob/main/img/LDAPS_check.PNG?raw=true)

@@ -120,13 +120,12 @@ def InternalDomainFromAnonymousLdap(nameserverIp):
 #no error at all. Any other "successful" edge cases
 #not yet accounted for.
 def DoesLdapsCompleteHandshake(dcIp):
-  s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+  context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
+  context.verify_mode = ssl.CERT_OPTIONAL
+  context.check_hostname = False
+  s = socket.create_connection((dcIp, 636))
   s.settimeout(5)
-  ssl_sock = ssl.wrap_socket(s,
-                            cert_reqs=ssl.CERT_OPTIONAL,
-                            suppress_ragged_eofs=False,
-                            do_handshake_on_connect=False)
-  ssl_sock.connect((dcIp, 636))
+  ssl_sock = context.wrap_socket(s, server_hostname=dcIp,do_handshake_on_connect=False)
   try:
     ssl_sock.do_handshake()
     ssl_sock.close()
@@ -176,14 +175,16 @@ if __name__ == '__main__':
                         help="LDAPS or BOTH - LDAPS checks for channel binding, BOTH checks for LDAP signing and LDAP channel binding [authentication required]")
     parser.add_argument('-dc-ip', required=True, action='store',
                         help='DNS Nameserver on network. Any DC\'s IPv4 address should work.')
+    parser.add_argument('-only-one', action="store_true",
+                        help='Test only the specified Domain Controller.')
     parser.add_argument('-u', default='guest', metavar='username',action='store',
                         help='Domain username value.')
-    parser.add_argument('-timeout', default=10, metavar='timeout',action='store', type=int,
-                        help='The timeout for MSLDAP client connection.')
     parser.add_argument('-p', default='defaultpass', metavar='password',action='store',
                         help='Domain username value.')
     parser.add_argument('-nthash', metavar='nthash',action='store',
                         help='NT hash of password')
+    parser.add_argument('-timeout', default=10, metavar='timeout',action='store', type=int,
+                        help='The timeout for MSLDAP client connection.')
     options = parser.parse_args()
     domainUser = options.u
 
@@ -212,11 +213,13 @@ if __name__ == '__main__':
         password = getpass.getpass(prompt="Password: ")
     fqdn = InternalDomainFromAnonymousLdap(options.dc_ip)
 
-
-    dcList = ResolveDCs(options.dc_ip, fqdn)
-    print("\n~Domain Controllers identified~")
-    for dc in dcList:
-        print("   " + dc)
+    if options.only_one == False:
+        dcList = ResolveDCs(options.dc_ip, fqdn)
+        print("\n~Domain Controllers identified~")
+        for dc in dcList:
+            print("   " + dc)
+    else:
+        dcList = [ options.dc_ip ]
 
     print("\n~Checking DCs for LDAP NTLM relay protections~")
     username = fqdn + "\\" + domainUser
