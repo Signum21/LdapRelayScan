@@ -20,7 +20,7 @@ It is recommended to use either Docker or a Python virtual environment when runn
 ### Docker
 1) Ensure [docker is installed](https://docs.docker.com/engine/install/debian/) on your machine
 2) Clone the repository and change directory
-	- `git clone https://github.com/zyn3rgy/LdapRelayScan.git && cd LdapRelayScan`
+	- `git clone https://github.com/Signum21/LdapRelayScan.git && cd LdapRelayScan`
 3) Build the Docker container
 	 - `docker build -f docker/Dockerfile -t ldaprelayscan .`
 4) [optionally] Ensure the script executes properly
@@ -29,7 +29,7 @@ It is recommended to use either Docker or a Python virtual environment when runn
 ### Python Virtual Environment
 1) Ensure [python virtualenv](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/) is installed on your machine
 2) Clone the repository and change directory
-	- `git clone https://github.com/zyn3rgy/LdapRelayScan.git && cd LdapRelayScan`
+	- `git clone https://github.com/Signum21/LdapRelayScan.git && cd LdapRelayScan`
 3) Create a Python virtual environment and activate it
 	- `virtualenv venv && source venv/bin/activate`
 4) Install exact requirement version dependencies
