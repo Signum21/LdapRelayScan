@@ -1,4 +1,3 @@
-
 # LDAP Relay Scan 
 A tool to check Domain Controllers for LDAP server protections regarding the relay of NTLM authentication. If you're interested in the specifics of the error-based enumeration, see [below](https://github.com/zyn3rgy/LdapRelayScan#error-based-enumeration-specifics). For details regarding what can be done when you identify a lack of LDAP protections, see the [references section](https://github.com/zyn3rgy/LdapRelayScan#references).
 ## Summary
@@ -48,7 +47,7 @@ arguments:
   -h, --help        show this help message and exit
   -method method    LDAPS or BOTH - LDAPS checks for channel binding, BOTH checks for LDAP signing and LDAP channel binding [authentication required]
   -dc-ip DC_IP      DNS Nameserver on network. Any DC's IPv4 address should work.
-  -only-one			Test only the specified Domain Controller.
+  -only-one         Test only the specified Domain Controller.
   -u username       Domain username value.
   -p password       Domain username value.
   -nthash nthash    NT hash of password
